@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIV Patient Referral System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --accent: #4fc3f7;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title i {
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 250px;
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .alert i {
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .actions-cell {
+            white-space: nowrap;
+        }
+
+        .search-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            background: none;
+            border: none;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .tab.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .form-col {
+                flex: 100%;
+            }
+            
+            .form-row {
+                margin: 0;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>HIV Patient Referral System</h1>
+            <p class="subtitle">Comprehensive patient management and tracking</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="alerts-container"></div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="records">View Records</div>
+            <div class="tab" data-tab="add">Add New Record</div>
+        </div>
+
+        <div class="tab-content active" id="records-tab">
+            <div class="card">
+                <div class="card-title">
+                    <span><i class="fas fa-list"></i> Patient Records</span>
+                    <button class="btn btn-secondary btn-sm" id="refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search by ROC ID, Facility, or Name...">
+                    <button class="btn" id="search-btn"><i class="fas fa-search"></i> Search</button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="records-table">
+                        <thead>
+                            <tr>
+                                <th>ROC ID</th>
+                                <th>Facility</th>
+                                <th>Name</th>
+                                <th>Received Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="records-body">
+                            <!-- Records will be loaded here -->
+                            <tr>
+                                <td colspan="6" style="text-align: center;">Loading records...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="add-tab">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-user-plus"></i> New Patient Referral</div>
+                <form id="referral-form">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="rocId">ROC ID *</label>
+                                <input type="text" id="rocId" name="rocId" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="facilityName">Facility Name *</label>
+                                <input type="text" id="facilityName" name="facilityName" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="receivedDate">Received Date *</label>
+                                <input type="date" id="receivedDate" name="receivedDate" required>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="referralDate">Referral Date</label>
+                                <input type="date" id="referralDate" name="referralDate">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="council">Council</label>
+                                <input type="text" id="council" name="council">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="referralProvider">Referral Provider</label>
+                                <input type="text" id="referralProvider" name="referralProvider">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" id="age" name="age" min="0" max="120">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="sex">Sex</label>
+                                <select id="sex" name="sex">
+                                    <option value="">Select</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="ward">Ward</label>
+                                <input type="text" id="ward" name="ward">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="tel" id="phoneNumber" name="phoneNumber">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="whoStage">WHO Stage</label>
+                                <select id="whoStage" name="whoStage">
+                                    <option value="">Select</option>
+                                    <option value="1">Stage 1</option>
+                                    <option value="2">Stage 2</option>
+                                    <option value="3">Stage 3</option>
+                                    <option value="4">Stage 4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="arvRegimen">ARV Regimen</label>
+                                <input type="text" id="arvRegimen" name="arvRegimen">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="referralDiagnosis">Referral Diagnosis</label>
+                        <textarea id="referralDiagnosis" name="referralDiagnosis"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="comments">Comments</label>
+                        <textarea id="comments" name="comments"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-block" id="submit-btn">
+                        <i class="fas fa-save"></i> Submit Referral
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="card-title"><i class="fas fa-edit"></i> Edit Patient Record</div>
+            <form id="edit-form">
+                <input type="hidden" id="edit-rocId">
+                <input type="hidden" id="edit-receivedDate">
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-facilityName">Facility Name *</label>
+                            <input type="text" id="edit-facilityName" name="facilityName" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-referralDate">Referral Date</label>
+                            <input type="date" id="edit-referralDate" name="referralDate">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-council">Council</label>
+                            <input type="text" id="edit-council" name="council">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-referralProvider">Referral Provider</label>
+                            <input type="text" id="edit-referralProvider" name="referralProvider">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-age">Age</label>
+                            <input type="number" id="edit-age" name="age" min="0" max="120">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-sex">Sex</label>
+                            <select id="edit-sex" name="sex">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-ward">Ward</label>
+                            <input type="text" id="edit-ward" name="ward">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-phoneNumber">Phone Number</label>
+                            <input type="tel" id="edit-phoneNumber" name="phoneNumber">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-whoStage">WHO Stage</label>
+                            <select id="edit-whoStage" name="whoStage">
+                                <option value="">Select</option>
+                                <option value="1">Stage 1</option>
+                                <option value="2">Stage 2</option>
+                                <option value="3">Stage 3</option>
+                                <option value="4">Stage 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="edit-arvRegimen">ARV Regimen</label>
+                            <input type="text" id="edit-arvRegimen" name="arvRegimen">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-referralDiagnosis">Referral Diagnosis</label>
+                    <textarea id="edit-referralDiagnosis" name="referralDiagnosis"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-comments">Comments</label>
+                    <textarea id="edit-comments" name="comments"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-col">
+                        <button type="submit" class="btn btn-success btn-block" id="update-btn">
+                            <i class="fas fa-save"></i> Update Record
+                        </button>
+                    </div>
+                    <div class="form-col">
+                        <button type="button" class="btn btn-danger btn-block" id="delete-btn">
+                            <i class="fas fa-trash"></i> Delete Record
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Replace with your Google Apps Script deployment URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwk9uooREDwe-bapXZyrvQdRpJ7T4wSm7MGVgPxxCHpvY_ZyNB9SFhlby6lbshczjhv6Q/exec';
+        
+        // DOM Elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const referralForm = document.getElementById('referral-form');
+        const editForm = document.getElementById('edit-form');
+        const editModal = document.getElementById('edit-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const deleteBtn = document.getElementById('delete-btn');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const searchBtn = document.getElementById('search-btn');
+        const searchInput = document.getElementById('search-input');
+        const recordsBody = document.getElementById('records-body');
+        const alertsContainer = document.getElementById('alerts-container');
+
+        // Current state
+        let currentRecords = [];
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default for received date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('receivedDate').value = today;
+            
+            // Load records
+            loadRecords();
+            
+            // Setup event listeners
+            setupEventListeners();
+        });
+        
+        function setupEventListeners() {
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    const tabId = tab.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Form submission
+            referralForm.addEventListener('submit', handleSubmit);
+            editForm.addEventListener('submit', handleUpdate);
+            
+            // Modal controls
+            closeModal.addEventListener('click', () => {
+                editModal.style.display = 'none';
+            });
+            
+            deleteBtn.addEventListener('click', handleDelete);
+            refreshBtn.addEventListener('click', loadRecords);
+            searchBtn.addEventListener('click', handleSearch);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleSearch();
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === editModal) {
+                    editModal.style.display = 'none';
+                }
+            });
+        }
+        
+        // Load all records from the API
+        function loadRecords() {
+            showLoading(recordsBody, 'Loading records...');
+            
+            fetch(`${API_URL}?action=getAll&method=GET`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        currentRecords = data.data;
+                        displayRecords(currentRecords);
+                    } else {
+                        showError('Failed to load records: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    showError('Network error: ' + error.message);
+                });
+        }
+        
+        // Display records in the table
+        function displayRecords(records) {
+            if (records.length === 0) {
+                recordsBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No records found</td></tr>';
+                return;
+            }
+            
+            recordsBody.innerHTML = '';
+            
+            records.forEach(record => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${record.rocId || 'N/A'}</td>
+                    <td>${record.facilityName || 'N/A'}</td>
+                    <td>${record.ward || 'N/A'}</td>
+                    <td>${formatDate(record.receivedDate) || 'N/A'}</td>
+                    <td>${getStatusBadge(record)}</td>
+                    <td class="actions-cell">
+                        <button class="btn btn-sm btn-warning edit-btn" data-rocid="${record.rocId}" data-date="${record.receivedDate}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                    </td>
+                `;
+                recordsBody.appendChild(tr);
+            });
+            
+            // Add event listeners to edit buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const rocId = btn.getAttribute('data-rocid');
+                    const date = btn.getAttribute('data-date');
+                    openEditModal(rocId, date);
+                });
+            });
+        }
+        
+        // Open edit modal with record data
+        function openEditModal(rocId, receivedDate) {
+            showLoading(editModal.querySelector('.modal-content'), 'Loading record...');
+            editModal.style.display = 'flex';
+            
+            // Find the record
+            const record = currentRecords.find(r => 
+                r.rocId === rocId && r.receivedDate === receivedDate
+            );
+            
+            if (!record) {
+                showError('Record not found');
+                editModal.style.display = 'none';
+                return;
+            }
+            
+            // Populate the form
+            document.getElementById('edit-rocId').value = record.rocId;
+            document.getElementById('edit-receivedDate').value = record.receivedDate;
+            document.getElementById('edit-facilityName').value = record.facilityName || '';
+            document.getElementById('edit-referralDate').value = record.referralDate || '';
+            document.getElementById('edit-council').value = record.council || '';
+            document.getElementById('edit-referralProvider').value = record.referralProvider || '';
+            document.getElementById('edit-age').value = record.age || '';
+            document.getElementById('edit-sex').value = record.sex || '';
+            document.getElementById('edit-ward').value = record.ward || '';
+            document.getElementById('edit-phoneNumber').value = record.phoneNumber || '';
+            document.getElementById('edit-whoStage').value = record.whoStage || '';
+            document.getElementById('edit-arvRegimen').value = record.arvRegimen || '';
+            document.getElementById('edit-referralDiagnosis').value = record.referralDiagnosis || '';
+            document.getElementById('edit-comments').value = record.comments || '';
+        }
+        
+        // Handle form submission for new records
+        function handleSubmit(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div> Processing...';
+            submitBtn.disabled = true;
+            
+            const formData = new FormData(referralForm);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (value) data[key] = value; // Only include non-empty values
+            });
+            
+            data.action = 'submit';
+            data.method = 'POST';
+            
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccess('Record submitted successfully!');
+                    referralForm.reset();
+                    // Set today's date as default
+                    document.getElementById('receivedDate').value = new Date().toISOString().split('T')[0];
+                    loadRecords();
+                } else {
+                    showError(data.error || 'Failed to submit record');
+                }
+            })
+            .catch(error => {
+                showError('Network error: ' + error.message);
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+        
+        // Handle record update
+        function handleUpdate(e) {
+            e.preventDefault();
+            const updateBtn = document.getElementById('update-btn');
+            const originalText = updateBtn.innerHTML;
+            updateBtn.innerHTML = '<div class="loading"></div> Updating...';
+            updateBtn.disabled = true;
+            
+            const formData = new FormData(editForm);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (value) data[key] = value; // Only include non-empty values
+            });
+            
+            // Add required fields
+            data.rocId = document.getElementById('edit-rocId').value;
+            data.receivedDate = document.getElementById('edit-receivedDate').value;
+            data.action = 'update';
+            data.method = 'POST';
+            
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccess('Record updated successfully!');
+                    editModal.style.display = 'none';
+                    loadRecords();
+                } else {
+                    showError(data.error || 'Failed to update record');
+                }
+            })
+            .catch(error => {
+                showError('Network error: ' + error.message);
+            })
+            .finally(() => {
+                updateBtn.innerHTML = originalText;
+                updateBtn.disabled = false;
+            });
+        }
+        
+        // Handle record deletion
+        function handleDelete() {
+            if (!confirm('Are you sure you want to delete this record? This action cannot be undone.')) {
+                return;
+            }
+            
+            const deleteBtn = document.getElementById('delete-btn');
+            const originalText = deleteBtn.innerHTML;
+            deleteBtn.innerHTML = '<div class="loading"></div> Deleting...';
+            deleteBtn.disabled = true;
+            
+            const rocId = document.getElementById('edit-rocId').value;
+            const receivedDate = document.getElementById('edit-receivedDate').value;
+            
+            fetch(`${API_URL}?action=delete&method=DELETE&rocId=${encodeURIComponent(rocId)}&receivedDate=${encodeURIComponent(receivedDate)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showSuccess('Record deleted successfully!');
+                        editModal.style.display = 'none';
+                        loadRecords();
+                    } else {
+                        showError(data.error || 'Failed to delete record');
+                    }
+                })
+                .catch(error => {
+                    showError('Network error: ' + error.message);
+                })
+                .finally(() => {
+                    deleteBtn.innerHTML = originalText;
+                    deleteBtn.disabled = false;
+                });
+        }
+        
+        // Handle search
+        function handleSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+            
+            if (!query) {
+                displayRecords(currentRecords);
+                return;
+            }
+            
+            const filtered = currentRecords.filter(record => 
+                (record.rocId && record.rocId.toLowerCase().includes(query)) ||
+                (record.facilityName && record.facilityName.toLowerCase().includes(query)) ||
+                (record.ward && record.ward.toLowerCase().includes(query))
+            );
+            
+            displayRecords(filtered);
+        }
+        
+        // Helper functions
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleDateString();
+        }
+        
+        function getStatusBadge(record) {
+            if (!record.confirmedDiagnosis) {
+                return '<span style="color: #dc3545;">Pending Diagnosis</span>';
+            } else if (!record.managementPlan) {
+                return '<span style="color: #ffc107;">Diagnosis Confirmed</span>';
+            } else {
+                return '<span style="color: #28a745;">Management Plan Set</span>';
+            }
+        }
+        
+        function showLoading(element, message) {
+            if (typeof element === 'string') {
+                element = document.querySelector(element);
+            }
+            element.innerHTML = `<div style="text-align: center; padding: 20px;"><div class="loading"></div> ${message}</div>`;
+        }
+        
+        function showSuccess(message) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            alertsContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+        
+        function showError(message) {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-danger';
+            alert.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            alertsContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
